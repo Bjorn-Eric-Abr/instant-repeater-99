@@ -48,5 +48,7 @@ func main() {
 		},
 	)
 
-	app.Listen("localhost:3099")
+	if err := app.Listen("localhost:3099"); err != nil {
+		log.Fatal(err)
+	}
 }
