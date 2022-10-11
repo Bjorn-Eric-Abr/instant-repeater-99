@@ -22,8 +22,10 @@ func formatJSON(data []byte) ([]byte, error) {
 
 func main() {
 	app := fiber.New()
-	app.Use(logger.New())
 	app.Use(recover.New())
+	app.Use(logger.New(logger.Config{
+		Format: "${time} | ${status} | ${method} | ${path}\n${resBody}\n\n",
+	}))
 
 	app.Get(
 		"/api",
@@ -41,9 +43,8 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			println(string(prettyJson))
 
-			return c.Send(prettyJson)
+			return c.Type("json", "utf-8").Send(prettyJson)
 		},
 	)
 
